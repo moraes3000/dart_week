@@ -10,6 +10,8 @@ class RegisterBindings implements Bindings {
       () => AuthRepositoryImpl(restClient: Get.find()),
     );
 
-    Get.lazyPut(() => RegisterController(authRepository: Get.find()));
+    Get.lazyPut(
+      () => RegisterController(authRepository: Get.find()),
+    );
   }
 }

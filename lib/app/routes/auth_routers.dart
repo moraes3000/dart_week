@@ -8,9 +8,10 @@ class AuthRouters {
   AuthRouters._();
   static final routers = <GetPage>[
     GetPage(
-        name: '/auth/login',
-        binding: LoginBindings(),
-        page: () => const LoginPage()),
+      name: '/auth/login',
+      binding: LoginBindings(),
+      page: () => const LoginPage(),
+    ),
     GetPage(
       name: '/auth/register',
       binding: RegisterBindings(),

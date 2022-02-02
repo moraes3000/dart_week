@@ -9,8 +9,9 @@ import './auth_repository.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final RestClient _restClient;
 
-  AuthRepositoryImpl({required RestClient restClient})
-      : _restClient = restClient;
+  AuthRepositoryImpl({
+    required RestClient restClient,
+  }) : _restClient = restClient;
 
   @override
   Future<UserModel> register(String name, String email, String password) async {
@@ -21,9 +22,9 @@ class AuthRepositoryImpl implements AuthRepository {
     });
 
     if (result.hasError) {
-      var message = 'Erro ao registar o usuário';
+      var message = 'Erro ao registrar usuário';
       if (result.statusCode == 400) {
-        message = result.body['error'];
+        message = result.body['erro'];
       }
 
       log(
@@ -32,38 +33,38 @@ class AuthRepositoryImpl implements AuthRepository {
         stackTrace: StackTrace.current,
       );
 
-      throw RestClientException(message, result.statusCode);
+      throw RestClientException(message);
     }
     return login(email, password);
   }
 
   @override
   Future<UserModel> login(String email, String password) async {
-    final result = await _restClient.post('/auth/', {
-      'email': email,
-      'password': password,
-    });
+    final result = await _restClient.post(
+      '/auth/',
+      {
+        'email': email,
+        'password': password,
+      },
+    );
 
     if (result.hasError) {
       if (result.statusCode == 403) {
         log(
-          "Usuário ou senha invalidos",
+          'Usuário ou senha inválidos',
           error: result.statusText,
           stackTrace: StackTrace.current,
         );
-        throw UserNotfoundException();
+        throw UserNotFoundException();
       }
 
       log(
-        'Erro ao autenticar o usuário (${result.statusCode})',
+        'Erro ao autenticar o usário (${result.statusCode})',
         error: result.statusText,
         stackTrace: StackTrace.current,
       );
-
-      throw RestClientException(
-          'Erro ao autenticar o usuários', result.statusCode);
+      throw RestClientException('Erro ao autenticar usuário');
     }
-
     return UserModel.fromMap(result.body);
   }
 }

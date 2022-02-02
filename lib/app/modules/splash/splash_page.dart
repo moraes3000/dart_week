@@ -1,15 +1,16 @@
 import 'package:dart_week/app/core/ui/widgets/vakinha_button.dart';
+import 'package:dart_week/app/modules/splash/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends GetView<SplashController> {
   const SplashPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xff140e0e),
+        color: const Color(0xFF140E0E),
         child: Stack(
           children: [
             Align(
@@ -23,28 +24,18 @@ class SplashPage extends StatelessWidget {
               ),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.center,
               child: Column(
                 children: [
                   SizedBox(
                     height: context.heightTransformer(reducedBy: 85),
                   ),
-                  Image.asset(
-                    'assets/img/header.png',
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
+                  Image.asset('assets/img/header.png'),
+                  const SizedBox(height: 60),
                   VakinhaButton(
-                    label: 'Acessar',
-                    onPressed: () {
-                      Get.toNamed('/auth/login');
-                    },
-                    height: 35,
-                    width: context.widthTransformer(
-                      reducedBy: 40,
-                    ),
+                    label: 'ACESSAR',
+                    width: context.widthTransformer(reducedBy: 35),
+                    onPressed: () => controller.checkLogged(),
                   ),
                 ],
               ),

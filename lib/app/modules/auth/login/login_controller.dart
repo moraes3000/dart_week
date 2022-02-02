@@ -1,6 +1,5 @@
-import 'dart:math';
-
-import 'package:dart_week/app/core/constants/constans.dart';
+import 'dart:developer';
+import 'package:dart_week/app/core/constants/constants.dart';
 import 'package:dart_week/app/core/exceptions/user_notfound_exception.dart';
 import 'package:dart_week/app/core/mixins/loader_mixin.dart';
 import 'package:dart_week/app/core/mixins/messages_mixin.dart';
@@ -14,39 +13,40 @@ class LoginController extends GetxController with LoaderMixin, MessagesMixin {
   final _loading = false.obs;
   final _message = Rxn<MessageModel>();
 
-  LoginController({required AuthRepository authRepository})
-      : _authRepository = authRepository;
+  LoginController({
+    required AuthRepository authRepository,
+  }) : _authRepository = authRepository;
 
   @override
   void onInit() {
-    super.onInit();
     loaderListener(_loading);
     messageListener(_message);
+    super.onInit();
   }
 
   Future<void> login({required String email, required String password}) async {
     try {
       _loading.toggle();
-      final userLogger = await _authRepository.login(email, password);
+      final userLogged = await _authRepository.login(email, password);
 
       final storage = GetStorage();
-      storage.write(Constans.USER_KEY, userLogger.id);
+      storage.write(Constants.USER_KEY, userLogged.id);
 
       _loading.toggle();
-    } on UserNotfoundException catch (e, s) {
+    } on UserNotFoundException catch (e, s) {
       _loading.toggle();
-      // log('Login ou senha invalidados', error: e, stackTrace: s);
+      log('Login ou senha inválidos', error: e, stackTrace: s);
       _message(MessageModel(
         title: 'Erro',
-        message: 'Login ou senha invalidados',
+        message: 'Login ou senha inválidos',
         type: MessageType.error,
       ));
-    } catch (e) {
+    } catch (e, s) {
       _loading.toggle();
-      // log('Login ou senha invalidados', error: e, stackTrace: s);
+      log('Login ou senha inválidos', error: e, stackTrace: s);
       _message(MessageModel(
         title: 'Erro',
-        message: 'ao realizar o login',
+        message: 'Erro ao realizar login',
         type: MessageType.error,
       ));
     }

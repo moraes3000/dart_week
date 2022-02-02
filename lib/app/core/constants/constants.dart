@@ -1,5 +1,5 @@
-class Constans {
-  Constans._();
+class Constants {
+  Constants._();
 
   static const USER_KEY = '/USER_KEY/';
 }
