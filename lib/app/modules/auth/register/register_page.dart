@@ -1,11 +1,34 @@
+import 'package:dart_week/app/core/ui/vakinha_state.dart';
 import 'package:dart_week/app/core/ui/widgets/vakinha_appbar.dart';
 import 'package:dart_week/app/core/ui/widgets/vakinha_button.dart';
 import 'package:dart_week/app/core/ui/widgets/vakinha_text_formfield.dart';
+import 'package:dart_week/app/modules/auth/register/register_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/context_extensions.dart';
+import 'package:validatorless/validatorless.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState
+    extends VakinhaState<RegisterPage, RegisterController> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameEC = TextEditingController();
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameEC.dispose();
+    _emailEC.dispose();
+    _passwordEC.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +42,7 @@ class RegisterPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -38,26 +62,62 @@ class RegisterPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const VakinhaTextFormfield(label: 'Nome'),
+                  VakinhaTextFormfield(
+                    label: 'Nome',
+                    controller: _nameEC,
+                    validator: Validatorless.required('Nome obrigatório'),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  const VakinhaTextFormfield(label: 'E-mail'),
+                  VakinhaTextFormfield(
+                    label: 'E-mail',
+                    controller: _emailEC,
+                    validator: Validatorless.multiple([
+                      Validatorless.required('Email obrigatório'),
+                      Validatorless.email('Email invalido'),
+                    ]),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  const VakinhaTextFormfield(label: 'Senha'),
+                  VakinhaTextFormfield(
+                    label: 'Senha',
+                    controller: _passwordEC,
+                    obscureText: true,
+                    validator: Validatorless.multiple([
+                      Validatorless.required('Senha obrigatório'),
+                      Validatorless.min(6, 'minimo 6 caracteres'),
+                    ]),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  const VakinhaTextFormfield(label: 'Confirme a senha'),
+                  VakinhaTextFormfield(
+                      label: 'Confirme a senha',
+                      obscureText: true,
+                      validator: Validatorless.multiple([
+                        Validatorless.required('Confirme a senha'),
+                        Validatorless.compare(_passwordEC, 'senha diferente'),
+                      ])),
                   const SizedBox(
                     height: 30,
                   ),
                   VakinhaButton(
                     width: context.width,
                     label: 'Cadastrar',
-                    onPressed: () {},
+                    onPressed: () {
+                      final formValid =
+                          _formKey.currentState?.validate() ?? false;
+
+                      if (formValid) {
+                        controller.register(
+                          name: _nameEC.text,
+                          email: _emailEC.text,
+                          password: _passwordEC.text,
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
