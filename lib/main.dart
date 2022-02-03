@@ -1,3 +1,4 @@
+import 'package:dart_week/app/routes/product_routers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -25,7 +26,8 @@ class VakinhaBurgerMainApp extends StatelessWidget {
       getPages: [
         ...SplashRouters.routers,
         ...AuthRouters.routers,
-        ...HomeRouters.routers
+        ...HomeRouters.routers,
+        ...ProductRouters.routers,
       ],
     );
   }

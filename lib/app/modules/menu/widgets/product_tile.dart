@@ -1,6 +1,7 @@
 import 'package:dart_week/app/core/ui/formatter_helper.dart';
 import 'package:dart_week/app/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductTile extends StatelessWidget {
   final ProductModel product;
@@ -9,7 +10,9 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.toNamed('/product_detail', arguments: product);
+      },
       child: Container(
         margin: const EdgeInsets.all(10),
         height: 80,
