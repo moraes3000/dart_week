@@ -1,4 +1,5 @@
 import 'package:dart_week/app/core/services/auth_service.dart';
+import 'package:dart_week/app/core/ui/widgets/Icon_badge.dart';
 import 'package:dart_week/app/core/ui/widgets/vakinha_appbar.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +16,19 @@ class HomePage extends GetView<HomeController> {
         return BottomNavigationBar(
           onTap: (value) => controller.tabsIndex = value,
           currentIndex: controller.tabsIndex,
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.list),
               label: 'Produtos',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
+              icon: IconBadge(
+                icon: Icons.shopping_cart,
+                number: controller.totalProductsInShoppingCard,
+              ),
               label: 'Carrinho',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.exit_to_app),
               label: 'Sair',
             ),

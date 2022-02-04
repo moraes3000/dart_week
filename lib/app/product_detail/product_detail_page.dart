@@ -27,12 +27,11 @@ class ProductDetailPage extends GetView<ProductDetailController> {
               Container(
                 width: context.width,
                 height: context.heightTransformer(reducedBy: 60),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                      'https://s2.glbimg.com/-on4mnFlw5G3RI4sFYUyPcsE5lE=/620x466/e.glbimg.com/og/ed/f/original/2021/05/26/burger_nou.jpeg',
-                    ),
+                        "http://dartweek.academiadoflutter.com.br/images${controller.product.image}"),
                   ),
                 ),
               ),
@@ -42,7 +41,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  'X_TUDO',
+                  controller.product.name,
                   style: context.textTheme.headline4!.copyWith(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -52,7 +51,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  'X_TUDO',
+                  controller.product.description,
                   style: context.textTheme.bodyText2!.copyWith(
                     color: Colors.black,
                   ),
@@ -61,32 +60,40 @@ class ProductDetailPage extends GetView<ProductDetailController> {
               const SizedBox(
                 height: 20,
               ),
-              PlusMinusBox(
-                label: 'Xtudo',
-                minusCallback: () {},
-                plusCallback: () {},
-                price: 6.00,
-                quantity: 1,
-              ),
+              Obx(() {
+                return PlusMinusBox(
+                  label: '',
+                  minusCallback: controller.removeProduct,
+                  plusCallback: controller.addProduct,
+                  price: controller.product.price,
+                  quantity: controller.quantity,
+                );
+              }),
               const Divider(),
               ListTile(
                 title: const Text(
                   'Total',
                   style: VakinhaUI.textBold,
                 ),
-                trailing: Text(
-                  FormatterHelper.formatcurrency(200),
-                  style: VakinhaUI.textBold,
-                ),
+                trailing: Obx(() {
+                  return Text(
+                    FormatterHelper.formatcurrency(controller.totalPrice),
+                    style: VakinhaUI.textBold,
+                  );
+                }),
               ),
               const SizedBox(
                 height: 20,
               ),
               Center(
-                  child: SizedBox(
-                      width: context.widthTransformer(reducedBy: 10),
-                      child:
-                          VakinhaButton(label: 'Adicionar', onPressed: () {}))),
+                child: SizedBox(
+                  width: context.widthTransformer(reducedBy: 10),
+                  child: VakinhaButton(
+                    label: controller.alreadyAdded ? 'Atualizar' : 'Adicionar',
+                    onPressed: controller.addAndRemoveProductInShoppingCard,
+                  ),
+                ),
+              ),
             ],
           ),
         ));
