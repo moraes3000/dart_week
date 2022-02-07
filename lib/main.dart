@@ -7,6 +7,7 @@ import 'app/core/bindings/application_bindings.dart';
 import 'app/core/ui/vakinha_ui.dart';
 import 'app/routes/auth_routers.dart';
 import 'app/routes/home_routers.dart';
+import 'app/routes/orders_routers.dart';
 import 'app/routes/splash_routers.dart';
 
 Future<void> main() async {
@@ -28,6 +29,7 @@ class VakinhaBurgerMainApp extends StatelessWidget {
         ...AuthRouters.routers,
         ...HomeRouters.routers,
         ...ProductRouters.routers,
+        ...OrdersRouters.routers,
       ],
     );
   }
