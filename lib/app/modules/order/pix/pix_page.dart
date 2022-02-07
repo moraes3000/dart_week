@@ -34,8 +34,13 @@ class PixPage extends StatelessWidget {
                 //   width: context.widthTransformer(reducedBy: 50),
                 //   height: context.heightTransformer(reducedBy: 50),
                 // ),
-                Image.memory(
-                  qrCore!.contentAsBytes(),
+                // Image.memory(
+                //   qrCore!.contentAsBytes(),
+                //   width: context.widthTransformer(reducedBy: 50),
+                //   height: context.heightTransformer(reducedBy: 50),
+                // ),
+                Image.asset(
+                  'assets/img/qrcode.png',
                   width: context.widthTransformer(reducedBy: 50),
                   height: context.heightTransformer(reducedBy: 50),
                 ),
